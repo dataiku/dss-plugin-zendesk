@@ -1,0 +1,35 @@
+{
+    "meta" : {
+        "label": "Zendesk token access",
+        "description": "Connect to Zendesk using your user name / API token",
+        "icon": "icon-ticket"
+    },
+    "defaultDefinableInline": true,
+    "defaultDefinableAtProjectLevel": true,
+    "pluginParams": [
+    ],
+
+    "params": [
+        {
+            "name": "zendesk_subdomain",
+            "label": "Subdomain",
+            "type": "STRING",
+            "description": "Usually your company name",
+            "defaultValue" : ""
+        },
+        {
+            "name": "zendesk_username",
+            "label": "Username",
+            "type": "STRING",
+            "description": "Usually your email address",
+            "defaultValue" : ""
+        },
+        {
+            "name": "zendesk_password",
+            "label": "Token",
+            "type": "PASSWORD",
+            "description": "From Zendesk admin > channel > API",
+            "defaultValue" : ""
+        }
+    ]
+}

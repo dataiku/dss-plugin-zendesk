@@ -1,0 +1,35 @@
+{
+    "meta" : {
+        "label": "OAuth access",
+        "description": "Connect to Zendesk using OAuth credentials",
+        "icon": "icon-ticket"
+    },
+    "defaultDefinableInline": true,
+    "defaultDefinableAtProjectLevel": true,
+    "pluginParams": [
+    ],
+    "params": [
+        {
+            "name": "zendesk_subdomain",
+            "label": "Subdomain",
+            "type": "STRING",
+            "defaultValue" : ""
+        },
+        {
+            "name": "zendesk-oauth_credentials",
+            "label": "Label for parameter-set",
+            "type": "CREDENTIAL_REQUEST",
+            "credentialRequestSettings": {
+                "type": "OAUTH2",
+                "oauth2Flow": "authorization_code",
+                "oauth2Provider": "AZURE",
+                "authorizationEndpoint": "https://login.microsoftonline.com/common/oauth2/authorize",
+                "tokenEndpoint": "https://login.microsoftonline.com/common/oauth2/token",
+                "scope": "openid Dataset.ReadWrite.All",
+                "resources": [
+                    "https://analysis.windows.net/powerbi/api"
+                ]
+            }
+        }
+    ]
+}
