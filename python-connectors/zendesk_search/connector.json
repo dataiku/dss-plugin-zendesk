@@ -20,19 +20,8 @@
                 {
                     "value": "token",
                     "label": "Token"
-                },
-                {
-                    "value": "oauth",
-                    "label": "OAuth"
                 }
             ]
-        },
-        {
-            "name": "oauth_access",
-            "label": "OAuth access",
-            "type": "PRESET",
-            "parameterSetId": "oauth-access",
-            "visibilityCondition": "model.zendesk_access_type == 'oauth'"
         },
         {
             "name": "token_access",
@@ -49,10 +38,18 @@
             "visibilityCondition": "model.zendesk_access_type == 'password'"
         },
         {
+            "name": "zd_incremental_api",
+            "label": "Incremental API",
+            "description": "Includes archived", 
+            "type": "BOOLEAN",
+            "defaultValue": false
+        },
+        {
             "name": "zendesk_api",
             "label": "Zendesk API",
             "type": "SELECT",
-            "defaultValue": "search",
+            "defaultValue": "tickets",
+            "visibilityCondition": "model.zd_incremental_api == false",
             "selectChoices": [
                 {
                     "value": "search",
@@ -77,10 +74,39 @@
                 {
                     "value": "satisfaction_ratings",
                     "label": "Satisfaction ratings"
+                }
+            ]
+        },
+        {
+            "name": "zendesk_api",
+            "label": "Zendesk API",
+            "type": "SELECT",
+            "defaultValue": "tickets",
+            "visibilityCondition": "model.zd_incremental_api == true",
+            "selectChoices": [
+                {
+                    "value": "users",
+                    "label": "Users"
+                },
+                {
+                    "value": "organizations",
+                    "label": "Organizations"
+                },
+                {
+                    "value": "groups",
+                    "label": "Groups"
+                },
+                {
+                    "value": "tickets",
+                    "label": "Tickets"
+                },
+                {
+                    "value": "satisfaction_ratings",
+                    "label": "Satisfaction ratings"
                 },
                 {
                     "value": "ticket_events",
-                    "label": "Ticket events (Incremental)"
+                    "label": "Ticket events"
                 }
             ]
         },
@@ -88,7 +114,7 @@
             "name": "zendesk_query_type",
             "label": "Query type",
             "type": "SELECT",
-            "defaultValue": "token",
+            "defaultValue": "ticket",
             "visibilityCondition": "model.zendesk_api == 'search'",
             "selectChoices": [
                 {
@@ -361,13 +387,6 @@
             "type": "STRING",
             "description": "Enterprise plan only",
             "visibilityCondition": "model.zendesk_api == 'users'"
-        },
-        {
-            "name": "zd_incremental_api",
-            "label": "Incremental API",
-            "description": "Includes archived", 
-            "type": "BOOLEAN",
-            "visibilityCondition": "model.zendesk_api != 'search'"
         },
         {
             "name": "zd_incremental_start_time",

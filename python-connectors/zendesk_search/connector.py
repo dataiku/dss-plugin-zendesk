@@ -1,6 +1,11 @@
+import logging
 from dataiku.connector import Connector
 from zendesk_constants import ZendeskEndpoints, zendesk_parameters_whitelist
 from zendesk_client import ZendeskClient
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO,
+                    format='zendesk plugin %(levelname)s - %(message)s')
 
 
 class ZendeskSearchConnector(Connector):
@@ -8,7 +13,7 @@ class ZendeskSearchConnector(Connector):
     def __init__(self, config, plugin_config):
         Connector.__init__(self, config, plugin_config)  # pass the parameters to the base class
 
-        print('ALX:config={}'.format(config))
+        logger.info('Init Zendesk plugin')
         self.client = ZendeskClient(config)
         self.search_parameters = self.filter_parameters(config)
         self.zendesk_api = self.config.get("zendesk_api")
@@ -57,7 +62,6 @@ class ZendeskSearchConnector(Connector):
             if parameter in zendesk_parameters_whitelist:
                 filtered_parameters[parameter] = parameters[parameter]
         return filtered_parameters
-
 
 
 class CustomDatasetWriter(object):

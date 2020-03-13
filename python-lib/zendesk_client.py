@@ -1,5 +1,6 @@
 import requests
 import re
+import logging
 from zendesk_constants import ZD
 
 zendesk_response = {
@@ -11,6 +12,10 @@ zendesk_response = {
     "satisfaction_ratings": "satisfaction_ratings",
     "ticket_events": "ticket_events"
 }
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO,
+                    format='zendesk plugin %(levelname)s - %(message)s')
 
 
 class ZendeskClient():
@@ -122,7 +127,7 @@ class ZendeskClient():
         return self.get_base_url() + "incremental/" + self.get_edge_point() + self.get_query_string(self.get_generic_query(parameters))
 
     def get_search_edge(self):
-        return self.zendesk_api + ".json"
+        return "search.json"
 
     def get_edge_point(self):
         return self.zendesk_api + ".json"
@@ -131,7 +136,6 @@ class ZendeskClient():
         return ZD.BASE_URL.format(subdomain=self.subdomain)
 
     def parse_search_options(self, search_options):
-        print('ALX:search_options={}'.format(search_options))
         ret = {'type': None, 'status': None, 'first_date': None, 'last_date': None}
         if 'zendesk_date_relation_1' in search_options\
                 and 'zendesk_date_operator_1' in search_options\
