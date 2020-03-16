@@ -1,0 +1,13 @@
+{
+    "id": "zendesk",
+    "version": "1.0.0",
+    "meta": {
+        "label": "Zendesk",
+        "description": "Import data from your Zendesk account",
+        "author": "Dataiku (Alex Bourret)",
+        "icon": "icon-ticket",
+        "tags": [],
+        "url": "https://www.dataiku.com/product/plugins/zendesk/",
+        "licenseInfo": "Apache Software License"
+    }
+}

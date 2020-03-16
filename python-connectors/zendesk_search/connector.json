@@ -1,0 +1,406 @@
+{
+    "meta" : {
+        "label": "Zendesk search",
+        "description": "",
+        "icon": "icon-ticket"
+    },
+    "readable": true,
+    "writable": false,
+    "params": [
+        {
+            "name": "zendesk_access_type",
+            "label": "Access type",
+            "type": "SELECT",
+            "defaultValue": "token",
+            "selectChoices": [
+                {
+                    "value": "password",
+                    "label": "Password"
+                },
+                {
+                    "value": "token",
+                    "label": "Token"
+                }
+            ]
+        },
+        {
+            "name": "token_access",
+            "label": "Token API access",
+            "type": "PRESET",
+            "parameterSetId": "token-access",
+            "visibilityCondition": "model.zendesk_access_type == 'token'"
+        },
+        {
+            "name": "password_access",
+            "label": "Password access",
+            "type": "PRESET",
+            "parameterSetId": "password-access",
+            "visibilityCondition": "model.zendesk_access_type == 'password'"
+        },
+        {
+            "name": "zd_incremental_api",
+            "label": "Incremental API",
+            "description": "Includes archived", 
+            "type": "BOOLEAN",
+            "defaultValue": false
+        },
+        {
+            "name": "zendesk_api",
+            "label": "Zendesk API",
+            "type": "SELECT",
+            "defaultValue": "tickets",
+            "visibilityCondition": "model.zd_incremental_api == false",
+            "selectChoices": [
+                {
+                    "value": "search",
+                    "label": "Search"
+                },
+                {
+                    "value": "users",
+                    "label": "Users"
+                },
+                {
+                    "value": "organizations",
+                    "label": "Organizations"
+                },
+                {
+                    "value": "groups",
+                    "label": "Groups"
+                },
+                {
+                    "value": "tickets",
+                    "label": "Tickets"
+                },
+                {
+                    "value": "satisfaction_ratings",
+                    "label": "Satisfaction ratings"
+                }
+            ]
+        },
+        {
+            "name": "zendesk_api",
+            "label": "Zendesk API",
+            "type": "SELECT",
+            "defaultValue": "tickets",
+            "visibilityCondition": "model.zd_incremental_api == true",
+            "selectChoices": [
+                {
+                    "value": "users",
+                    "label": "Users"
+                },
+                {
+                    "value": "organizations",
+                    "label": "Organizations"
+                },
+                {
+                    "value": "groups",
+                    "label": "Groups"
+                },
+                {
+                    "value": "tickets",
+                    "label": "Tickets"
+                },
+                {
+                    "value": "satisfaction_ratings",
+                    "label": "Satisfaction ratings"
+                },
+                {
+                    "value": "ticket_events",
+                    "label": "Ticket events"
+                }
+            ]
+        },
+        {
+            "name": "zendesk_query_type",
+            "label": "Query type",
+            "type": "SELECT",
+            "defaultValue": "ticket",
+            "visibilityCondition": "model.zendesk_api == 'search'",
+            "selectChoices": [
+                {
+                    "value": "ticket",
+                    "label": "Ticket"
+                },
+                {
+                    "value": "user",
+                    "label": "User"
+                },
+                {
+                    "value": "organization",
+                    "label": "Organization"
+                },
+                {
+                    "value": "group",
+                    "label": "Group"
+                },
+                {
+                    "value": "free",
+                    "label": "Free"
+                }
+            ]
+        },
+        {
+            "name": "zendesk_ticket_status",
+            "label": "Ticket status",
+            "type": "SELECT",
+            "defaultValue": null,
+            "visibilityCondition": "model.zendesk_query_type == 'ticket' && model.zendesk_api == 'search'",
+            "selectChoices": [
+                {
+                    "value": null,
+                    "label": "Any"
+                },
+                {
+                    "value": "new",
+                    "label": "New"
+                },
+                {
+                    "value": "open",
+                    "label": "Open"
+                },
+                {
+                    "value": "pending",
+                    "label": "Pending"
+                },
+                {
+                    "value": "hold",
+                    "label": "Hold"
+                },
+                {
+                    "value": "solved",
+                    "label": "Solved"
+                },
+                {
+                    "value": "closed",
+                    "label": "Closed"
+                }
+            ]
+        },
+        {
+            "name": "zendesk_query",
+            "label": "Query",
+            "type": "STRING",
+            "description": "type:organization created<2015-05-01",
+            "visibilityCondition": "model.zendesk_query_type == 'free' && model.zendesk_api == 'search'",
+            "defaultValue" : ""
+        },
+        {
+            "name": "zendesk_date_operator_1",
+            "label": "Date operator 1",
+            "type": "SELECT",
+            "defaultValue": "none",
+            "visibilityCondition": "model.zendesk_api == 'search'",
+            "selectChoices": [
+                {
+                    "value": "none",
+                    "label": "None"
+                },
+                {
+                    "value": "created",
+                    "label": "Created"
+                },
+                {
+                    "value": "updated",
+                    "label": "Updated"
+                },
+                {
+                    "value": "solved",
+                    "label": "Solved"
+                }
+            ]
+        },
+        {
+            "name": "zendesk_date_relation_1",
+            "label": "Operator",
+            "type": "SELECT",
+            "visibilityCondition": "model.zendesk_date_operator_1 != 'none' && model.zendesk_api == 'search'",
+            "defaultValue": ":",
+            "selectChoices": [
+                {
+                    "value": "<",
+                    "label": "Before"
+                },
+                {
+                    "value": ">",
+                    "label": "After"
+                },
+                {
+                    "value": ":",
+                    "label": "At"
+                }
+            ]
+        },
+        {
+            "name": "zendesk_date_1",
+            "label": "Date 1",
+            "type": "STRING",
+            "description": "YYYY-MM-DD / 2014-08-05T24:00:00Z / 4hours...",
+            "visibilityCondition": "model.zendesk_date_operator_1 != 'none' && model.zendesk_api == 'search'"
+        },
+        {
+            "name": "zendesk_date_operator_2",
+            "label": "Date operator 2",
+            "type": "SELECT",
+            "visibilityCondition": "model.zendesk_date_operator_1 != 'none' && model.zendesk_api == 'search'",
+            "defaultValue": "none",
+            "selectChoices": [
+                {
+                    "value": "none",
+                    "label": "None"
+                },
+                {
+                    "value": "created",
+                    "label": "Created"
+                },
+                {
+                    "value": "updated",
+                    "label": "Updated"
+                },
+                {
+                    "value": "solved",
+                    "label": "Solved"
+                }
+            ]
+        },
+        {
+            "name": "zendesk_date_relation_2",
+            "label": "Operator",
+            "type": "SELECT",
+            "visibilityCondition": "model.zendesk_date_operator_1 != 'none' && model.zendesk_date_operator_2 != 'none' && model.zendesk_api == 'search'",
+            "defaultValue": ":",
+            "selectChoices": [
+                {
+                    "value": "<",
+                    "label": "Before"
+                },
+                {
+                    "value": ">",
+                    "label": "After"
+                },
+                {
+                    "value": ":",
+                    "label": "At"
+                }
+            ]
+        },
+        {
+            "name": "zendesk_date_2",
+            "label": "Date 2",
+            "type": "STRING",
+            "description": "YYYY-MM-DD / 2014-08-05T24:00:00Z / 4hours...",
+            "visibilityCondition": "model.zendesk_date_operator_1 != 'none' && model.zendesk_date_operator_2 != 'none' && model.zendesk_api == 'search'"
+        },
+        {
+            "name": "zd_satisfaction_ratings_score",
+            "label": "Score",
+            "type": "SELECT",
+            "visibilityCondition": "model.zendesk_api == 'satisfaction_ratings'",
+            "defaultValue": null,
+            "selectChoices": [
+                {
+                    "value": null,
+                    "label": "Any"
+                },
+                {
+                    "value": "offered",
+                    "label": "Offered"
+                },
+                {
+                    "value": "unoffered",
+                    "label": "Unoffered"
+                },
+                {
+                    "value": "received",
+                    "label": "Received"
+                },
+                {
+                    "value": "received_with_comment",
+                    "label": "Received with comment"
+                },
+                {
+                    "value": "received_without_comment",
+                    "label": "Received without comment"
+                },
+                {
+                    "value": "good",
+                    "label": "Good"
+                },
+                {
+                    "value": "good_with_comment",
+                    "label": "Good with comment"
+                },
+                {
+                    "value": "good_without_comment",
+                    "label": "Good without comment"
+                },
+                {
+                    "value": "bad",
+                    "label": "Bad"
+                },
+                {
+                    "value": "bad_with_comment",
+                    "label": "Bad with comment"
+                },
+                {
+                    "value": "bad_without_comment",
+                    "label": "Bad without comment"
+                }
+            ]
+        },
+        {
+            "name": "zd_satisfaction_ratings_start_time",
+            "label": "Start time",
+            "type": "STRING",
+            "description": "Epoch format",
+            "visibilityCondition": "model.zendesk_api == 'satisfaction_ratings'"
+        },
+        {
+            "name": "zd_satisfaction_ratings_end_time",
+            "label": "End time",
+            "type": "STRING",
+            "description": "Epoch format",
+            "visibilityCondition": "model.zendesk_api == 'satisfaction_ratings'"
+        },
+        {
+            "name": "zd_users_role",
+            "label": "User role(s)",
+            "type": "MULTISELECT",
+            "visibilityCondition": "model.zendesk_api == 'users'",
+            "selectChoices": [
+                {
+                    "value": "end-user",
+                    "label": "End user"
+                },
+                {
+                    "value": "agent",
+                    "label": "Agent"
+                },
+                {
+                    "value": "admin",
+                    "label": "Admin"
+                }
+            ]
+        },
+        {
+            "name": "zd_users_permission_set",
+            "label": "Permission set",
+            "type": "STRING",
+            "description": "Enterprise plan only",
+            "visibilityCondition": "model.zendesk_api == 'users'"
+        },
+        {
+            "name": "zd_incremental_start_time",
+            "label": "Start time",
+            "type": "STRING",
+            "description": "Epoch format",
+            "visibilityCondition": "model.zendesk_api != 'search' && model.zd_incremental_api == true"
+        },
+        {
+            "name": "zd_incremental_end_time",
+            "label": "End time",
+            "type": "STRING",
+            "description": "Epoch format",
+            "visibilityCondition": "model.zendesk_api != 'search' && model.zd_incremental_api == true"
+        }
+    ]
+}
