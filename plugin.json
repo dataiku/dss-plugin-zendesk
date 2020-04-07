@@ -6,7 +6,7 @@
         "description": "Import data from your Zendesk account",
         "author": "Dataiku (Alex Bourret)",
         "icon": "icon-ticket",
-        "tags": [],
+        "tags": ["Connector", "Productivity"],
         "url": "https://www.dataiku.com/product/plugins/zendesk/",
         "licenseInfo": "Apache Software License"
     }
