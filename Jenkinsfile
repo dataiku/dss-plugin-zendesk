@@ -13,9 +13,7 @@ pipeline {
          steps {
             sh 'echo "Running unit tests"'
             sh """
-               if [[ -d .env ]]; then
-                  virtualenv --no-site-packages .env
-               fi
+               virtualenv --no-site-packages .env
                . .env/bin/activate
                if [[ -f code-env/python/spec/requirements.txt ]]; then
                   pip install -r code-env/python/spec/requirements.txt
