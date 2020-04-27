@@ -12,7 +12,13 @@ pipeline {
       stage('Run Unit Tests') {
          steps {
             sh 'echo "Running unit tests"'
-            sh 'pytest'
+            sh """
+               . .env/bin/activate
+               if [[ -f code-env/python/spec/requirements.txt ]]; then
+                  pip install -r code-env/python/spec/requirements.txt
+               fi
+               pytest
+               """
             sh 'echo "Done with unit tests"'
          }
       }
