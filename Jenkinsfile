@@ -9,5 +9,12 @@ pipeline {
          //   httpRequest authentication: 'dss-creds', httpMode: 'GET', url: "$host/public/api/projects/$projectKey/bundles/exported/$bundleId/archive", outputFile: 'bundle.zip'  
         }
       }
+      stage('Run Unit Tests') {
+         steps {
+            sh 'echo "Running unit tests"'
+            sh 'pytest'
+            sh 'echo "Done with unit tests"'
+         }
+      }
    }
 }
