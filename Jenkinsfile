@@ -17,6 +17,9 @@ pipeline {
                sh 'virtualenv --no-site-packages .env'
             }
             sh """
+               if [[ -d .env ]]; then
+                  virtualenv --no-site-packages .env
+               fi
                . .env/bin/activate
                if [[ -f code-env/python/spec/requirements.txt ]]; then
                   pip install -r code-env/python/spec/requirements.txt
