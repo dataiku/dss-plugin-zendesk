@@ -9,6 +9,12 @@ pipeline {
          //   httpRequest authentication: 'dss-creds', httpMode: 'GET', url: "$host/public/api/projects/$projectKey/bundles/exported/$bundleId/archive", outputFile: 'bundle.zip'  
         }
       }
+      stage('Preparing env') {
+         if (!fileExists('.env')){
+               echo 'Creating virtualenv ...'
+               sh 'virtualenv --no-site-packages .env'
+            }
+      }
       stage('Run Unit Tests') {
          steps {
             sh 'echo "Running unit tests"'
