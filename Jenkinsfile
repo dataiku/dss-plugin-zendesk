@@ -12,10 +12,6 @@ pipeline {
       stage('Run Unit Tests') {
          steps {
             sh 'echo "Running unit tests"'
-            if (!fileExists('.env')){
-               echo 'Creating virtualenv ...'
-               sh 'virtualenv --no-site-packages .env'
-            }
             sh """
                if [[ -d .env ]]; then
                   virtualenv --no-site-packages .env
