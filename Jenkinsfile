@@ -51,10 +51,10 @@ pipeline {
             sh 'echo "Done with unit tests"'
          }
       }
-      post {
-        always {
-            junit '*.xml'
-        }
-      }
+   }
+   post {
+     always {
+        junit '*.xml'
+     }
    }
 }
