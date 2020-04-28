@@ -14,7 +14,7 @@ pipeline {
       }
       stage('Update code env') {
         when {
-            expression { return fileExists("code-env/python/spec/requirements.txt") }
+            expression { return fileExists("dist/code-env/python/spec/requirements.txt") }
          }
          steps {
             httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/plugins/zendesk/code-env/actions/update"
