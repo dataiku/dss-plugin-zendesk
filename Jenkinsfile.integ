@@ -13,7 +13,7 @@ pipeline {
       }
       stage('Update code env') {
          steps {
-            httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/plugins/zendesk/code-env/actions/update
+            httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/plugins/zendesk/code-env/actions/update"
          }
       }
    }
