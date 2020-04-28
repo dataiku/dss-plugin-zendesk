@@ -1,0 +1,15 @@
+pipeline {
+   agent any
+   stages {
+      stage('Make zip') {
+         steps {
+            sh 'make plugin'
+         }
+      }
+   }
+//   post {
+//     always {
+//        junit '*.xml'
+//     }
+//   }
+}
