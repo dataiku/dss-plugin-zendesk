@@ -46,10 +46,15 @@ pipeline {
             sh 'echo "Running unit tests"'
             sh """
                . venv/bin/activate
-               pytest
+               pytest --junitxml=result.xml
                """
             sh 'echo "Done with unit tests"'
          }
+      }
+      post {
+        always {
+            junit '*.xml'
+        }
       }
    }
 }
