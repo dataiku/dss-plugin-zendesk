@@ -9,15 +9,21 @@ pipeline {
          //   httpRequest authentication: 'dss-creds', httpMode: 'GET', url: "$host/public/api/projects/$projectKey/bundles/exported/$bundleId/archive", outputFile: 'bundle.zip'  
         }
       }
+      stage('Install dependencies') {
+         steps {
+            sh 'echo "Installing deps"'
+            sh """
+               python3 -m venv venv
+               . venv/bin/activate
+               """
+            sh 'echo "Done with deps"'
+         }
+      }
       stage('Run Unit Tests') {
          steps {
             sh 'echo "Running unit tests"'
             sh """
-               virtualenv --no-site-packages .env
-               . .env/bin/activate
-               if [[ -f code-env/python/spec/requirements.txt ]]; then
-                  pip install -r code-env/python/spec/requirements.txt
-               fi
+               . venv/bin/activate
                pytest
                """
             sh 'echo "Done with unit tests"'
