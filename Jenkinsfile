@@ -13,7 +13,7 @@ pipeline {
          steps {
             sh 'echo "Installing deps"'
             sh """
-               python3 -m venv venv
+               virtualenv --python=python3.5 venv
                . venv/bin/activate
                """
             sh 'echo "Done with deps"'
