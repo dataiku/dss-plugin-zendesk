@@ -6,11 +6,9 @@ pipeline {
             sh 'make plugin'
          }
       }
-   }
-   stages {
       stage('Upload plugin to target host') {
          steps {
-            httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "$dss_target_host/public/api/plugins/zendesk/actions/updateFromZip", uploadFile: 'dist/dss-plugin-zendesk-1.0.0.zip', multipartName: 'file'
+            httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: '$dss_target_host/public/api/plugins/zendesk/actions/updateFromZip', uploadFile: 'dist/dss-plugin-zendesk-1.0.0.zip', multipartName: 'file'
          }
       }
    }
