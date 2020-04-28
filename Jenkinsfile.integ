@@ -4,6 +4,7 @@ pipeline {
       stage('Make zip') {
          steps {
             sh 'make plugin'
+            sh 'cd dist && unzip dss-plugin-zendesk-1.0.0.zip && ls -alh'
          }
       }
       stage('Upload plugin to target host') {
