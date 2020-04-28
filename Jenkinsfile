@@ -16,6 +16,7 @@ pipeline {
                python3 -m venv venv
                . venv/bin/activate
                pip install -r code-env/python/spec/requirements.txt || true
+            """
             sh 'echo "Done with deps"'
          }
       }
