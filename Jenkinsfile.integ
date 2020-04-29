@@ -1,3 +1,30 @@
+import groovy.json.JsonSlurper
+import groovy.lang.Tuple
+
+def triggerRunId
+def triggerId
+def start
+def end
+def outcome
+def testcases = []
+
+String generateJunitReport(testcases) {
+    def junit = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+    junit += "<testsuite tests=\""+ testcases.size() +"\" time=\""+ testcases.sum{ it[3] } +"\">\n"
+    testcases.each {
+        println("REsult: " + it)
+        junit += "<testcase classname=\"" + it[0] + "\" name=\"" + it[1] + "\" time=\"" + it[3] + "\">\n"
+        if(it[2] != "SUCCESS") {
+            junit += "<error/>\n"
+        }
+        junit += "</testcase>\n"
+    }
+    junit += "</testsuite>"
+    println("*****XML*****")
+    println(junit)
+    return junit
+}
+
 pipeline {
    agent any
    stages {
@@ -20,10 +47,49 @@ pipeline {
             httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/plugins/zendesk/code-env/actions/update"
          }
       }
+      stage('Test Wait for') {
+            steps {
+                script {
+                    def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/PLUGINTESTZENDESK/scenarios/run_read_zendesk_groups/run/"
+                    def json = new JsonSlurper().parseText(response.content)
+                    println("Content: "+ json.runId)
+                    triggerId = json.trigger.id
+                    triggerRunId = json.runId
+                    println("triggerId: " + triggerId + ", triggerRunId: " + triggerRunId)
+                }
+                sleep(1)
+                timeout(5) {
+                    waitUntil {
+                        script {
+                            def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/PLUGINTESTZENDESK/scenarios/run_read_zendesk_groups/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
+                            def j = new JsonSlurper().parseText(r.content)
+                            println("Content: "+ r.content)
+                            def over = j.scenarioRun.containsKey("result");
+                            if(over) {
+                                start = j.scenarioRun.result.start
+                                end = j.scenarioRun.result.end
+                                outcome = j.scenarioRun.result.outcome
+                                testcases.add(["PLUGINTESTZENDESK", "run_read_zendesk_groups", outcome, (end-start)/1000]);
+                            }
+                            return over;
+                        }
+                    }
+                }
+            }
+        }
+        stage ('Output test result') {
+            steps {
+                script {
+                    //println("Result: " + outcome + " from " + start + " to " + end)
+                    def junit = generateJunitReport(testcases)
+                    writeFile file: "junit.xml", text: junit
+                }
+            }
+        }
    }
-//   post {
-//     always {
-//        junit '*.xml'
-//     }
-//   }
+    post {
+        always {
+            junit '*.xml'
+        }
+    }
 }
