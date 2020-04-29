@@ -16,13 +16,15 @@ pipeline {
          }
       }
       stage('Run Integration Tests') {
-         withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: dss-target-admin, usernameVariable: 'API_KEY']]) {
-            sh 'echo "Running integration tests"'
-            sh """
-               . venv/bin/activate
-               pytest --junitxml=result.xml ./python-tests/integ
-               """
-            sh 'echo "Done with integration tests"'
+         steps {
+             withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: dss-target-admin, usernameVariable: 'API_KEY']]) {
+                sh 'echo "Running integration tests"'
+                sh """
+                   . venv/bin/activate
+                   pytest --junitxml=result.xml ./python-tests/integ
+                   """
+                sh 'echo "Done with integration tests"'
+             }
          }
       }
    }
