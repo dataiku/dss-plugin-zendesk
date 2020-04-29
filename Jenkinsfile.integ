@@ -47,18 +47,16 @@ pipeline {
             httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/plugins/zendesk/code-env/actions/update"
          }
       }
-      stage('Test Wait for') {
+      stage('Execute run_read_zendesk_groups') {
             steps {
                 script {
                     def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/PLUGINTESTZENDESK/scenarios/run_read_zendesk_groups/run/"
                     def json = new JsonSlurper().parseText(response.content)
-                    println("Content: "+ json.runId)
                     triggerId = json.trigger.id
                     triggerRunId = json.runId
-                    println("triggerId: " + triggerId + ", triggerRunId: " + triggerRunId)
                 }
                 sleep(1)
-                timeout(5) {
+                timeout(180) {
                     waitUntil {
                         script {
                             def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/PLUGINTESTZENDESK/scenarios/run_read_zendesk_groups/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
@@ -70,6 +68,146 @@ pipeline {
                                 end = j.scenarioRun.result.end
                                 outcome = j.scenarioRun.result.outcome
                                 testcases.add(["PLUGINTESTZENDESK", "run_read_zendesk_groups", outcome, (end-start)/1000]);
+                            }
+                            return over;
+                        }
+                    }
+                }
+            }
+        }
+        stage('Execute run_read_zendesk_incremental') {
+            steps {
+                script {
+                    def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/PLUGINTESTZENDESK/scenarios/run_read_zendesk_incremental/run/"
+                    def json = new JsonSlurper().parseText(response.content)
+                    triggerId = json.trigger.id
+                    triggerRunId = json.runId
+                }
+                sleep(1)
+                timeout(180) {
+                    waitUntil {
+                        script {
+                            def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/PLUGINTESTZENDESK/scenarios/run_read_zendesk_incremental/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
+                            def j = new JsonSlurper().parseText(r.content)
+                            println("Content: "+ r.content)
+                            def over = j.scenarioRun.containsKey("result");
+                            if(over) {
+                                start = j.scenarioRun.result.start
+                                end = j.scenarioRun.result.end
+                                outcome = j.scenarioRun.result.outcome
+                                testcases.add(["PLUGINTESTZENDESK", "run_read_zendesk_incremental", outcome, (end-start)/1000]);
+                            }
+                            return over;
+                        }
+                    }
+                }
+            }
+        }
+        stage('Execute run_read_zendesk_organizations') {
+            steps {
+                script {
+                    def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/PLUGINTESTZENDESK/scenarios/run_read_zendesk_organizations/run/"
+                    def json = new JsonSlurper().parseText(response.content)
+                    triggerId = json.trigger.id
+                    triggerRunId = json.runId
+                }
+                sleep(1)
+                timeout(180) {
+                    waitUntil {
+                        script {
+                            def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/PLUGINTESTZENDESK/scenarios/run_read_zendesk_organizations/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
+                            def j = new JsonSlurper().parseText(r.content)
+                            println("Content: "+ r.content)
+                            def over = j.scenarioRun.containsKey("result");
+                            if(over) {
+                                start = j.scenarioRun.result.start
+                                end = j.scenarioRun.result.end
+                                outcome = j.scenarioRun.result.outcome
+                                testcases.add(["PLUGINTESTZENDESK", "run_read_zendesk_organizations", outcome, (end-start)/1000]);
+                            }
+                            return over;
+                        }
+                    }
+                }
+            }
+        }
+        stage('Execute run_read_zendesk_search') {
+            steps {
+                script {
+                    def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/PLUGINTESTZENDESK/scenarios/run_read_zendesk_search/run/"
+                    def json = new JsonSlurper().parseText(response.content)
+                    triggerId = json.trigger.id
+                    triggerRunId = json.runId
+                }
+                sleep(1)
+                timeout(180) {
+                    waitUntil {
+                        script {
+                            def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/PLUGINTESTZENDESK/scenarios/run_read_zendesk_search/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
+                            def j = new JsonSlurper().parseText(r.content)
+                            println("Content: "+ r.content)
+                            def over = j.scenarioRun.containsKey("result");
+                            if(over) {
+                                start = j.scenarioRun.result.start
+                                end = j.scenarioRun.result.end
+                                outcome = j.scenarioRun.result.outcome
+                                testcases.add(["PLUGINTESTZENDESK", "run_read_zendesk_search", outcome, (end-start)/1000]);
+                            }
+                            return over;
+                        }
+                    }
+                }
+            }
+        }
+        stage('Execute run_read_zendesk_tickets') {
+            steps {
+                script {
+                    def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/PLUGINTESTZENDESK/scenarios/run_read_zendesk_tickets/run/"
+                    def json = new JsonSlurper().parseText(response.content)
+                    triggerId = json.trigger.id
+                    triggerRunId = json.runId
+                }
+                sleep(1)
+                timeout(180) {
+                    waitUntil {
+                        script {
+                            def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/PLUGINTESTZENDESK/scenarios/run_read_zendesk_tickets/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
+                            def j = new JsonSlurper().parseText(r.content)
+                            println("Content: "+ r.content)
+                            def over = j.scenarioRun.containsKey("result");
+                            if(over) {
+                                start = j.scenarioRun.result.start
+                                end = j.scenarioRun.result.end
+                                outcome = j.scenarioRun.result.outcome
+                                testcases.add(["PLUGINTESTZENDESK", "run_read_zendesk_tickets", outcome, (end-start)/1000]);
+                            }
+                            return over;
+                        }
+                    }
+                }
+            }
+        }
+        stage('Execute run_read_zendesk_users') {
+            steps {
+                script {
+                    def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/PLUGINTESTZENDESK/scenarios/run_read_zendesk_users/run/"
+                    def json = new JsonSlurper().parseText(response.content)
+                    triggerId = json.trigger.id
+                    triggerRunId = json.runId
+                }
+                sleep(1)
+                timeout(180) {
+                    waitUntil {
+                        script {
+                            def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/PLUGINTESTZENDESK/scenarios/run_read_zendesk_users/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
+                            def j = new JsonSlurper().parseText(r.content)
+                            println("Content: "+ r.content)
+                            def over = j.scenarioRun.containsKey("result");
+                            if(over) {
+                                start = j.scenarioRun.result.start
+                                end = j.scenarioRun.result.end
+                                outcome = j.scenarioRun.result.outcome
+                                testcases.add(["PLUGINTESTZENDESK", "run_read_zendesk_users", outcome, (end-start)/1000]);
                             }
                             return over;
                         }
