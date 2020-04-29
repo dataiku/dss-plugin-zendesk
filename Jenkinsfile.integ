@@ -48,7 +48,7 @@ pipeline {
                 httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/plugins/zendesk/code-env/actions/update"
             }
         }
-        stage('Execute run_read_zendesk_groups') {
+        stage('Running tests scenarii') {
             steps {
                 script {
                     def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_groups/run/"
@@ -74,10 +74,7 @@ pipeline {
                         }
                     }
                 }
-            }
-        }
-        stage('Execute run_read_zendesk_incremental') {
-            steps {
+
                 script {
                     def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_incremental/run/"
                     def json = new JsonSlurper().parseText(response.content)
@@ -102,10 +99,6 @@ pipeline {
                         }
                     }
                 }
-            }
-        }
-        stage('Execute run_read_zendesk_organizations') {
-            steps {
                 script {
                     def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_organizations/run/"
                     def json = new JsonSlurper().parseText(response.content)
@@ -130,10 +123,7 @@ pipeline {
                         }
                     }
                 }
-            }
-        }
-        stage('Execute run_read_zendesk_search') {
-            steps {
+
                 script {
                     def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_search/run/"
                     def json = new JsonSlurper().parseText(response.content)
@@ -158,10 +148,7 @@ pipeline {
                         }
                     }
                 }
-            }
-        }
-        stage('Execute run_read_zendesk_tickets') {
-            steps {
+
                 script {
                     def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_tickets/run/"
                     def json = new JsonSlurper().parseText(response.content)
@@ -186,10 +173,7 @@ pipeline {
                         }
                     }
                 }
-            }
-        }
-        stage('Execute run_read_zendesk_users') {
-            steps {
+
                 script {
                     def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_users/run/"
                     def json = new JsonSlurper().parseText(response.content)
