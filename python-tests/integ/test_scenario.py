@@ -22,7 +22,7 @@ def test_run_read_zendesk_search():
 
 
 @scenario('PLUGINTESTZENDESK', 'run_read_zendesk_tickets')
-def test_run_read_zendesk_incremental():
+def test_run_read_zendesk_tickets():
     pass
 
 
