@@ -17,7 +17,7 @@ pipeline {
       }
       stage('Run Integration Tests') {
          steps {
-             withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'dss-target-admin', usernameVariable: 'API_KEY']]) {
+             withCredentials([string(credentialsId: 'dss-target-admin', variable: 'API_KEY')]) {
                 sh 'echo "Running integration tests"'
                 sh """
                    . venv/bin/activate
