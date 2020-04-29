@@ -38,7 +38,7 @@ pipeline {
             sh 'echo "Running unit tests"'
             sh """
                . venv/bin/activate
-               pytest --junitxml=result.xml
+               pytest --junitxml=result.xml ./python-tests/unit
                """
             sh 'echo "Done with unit tests"'
          }
