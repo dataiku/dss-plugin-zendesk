@@ -1,7 +1,7 @@
 pipeline {
    agent any
    environment {
-        HOST = '$dss-target-host'
+        HOST = "$dss_target_host"
     }
    stages {
       stage('Install dependencies') {
