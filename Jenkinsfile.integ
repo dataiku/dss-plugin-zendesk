@@ -1,14 +1,36 @@
 import groovy.json.JsonSlurper
 
-def project = "PLUGINTESTZENDESK"
-
 def triggerRunId
 def triggerId
-def start
-def end
-def outcome
 def testcases = []
-def max_timeout = 180
+def scenario_timeout = 180
+def project = "PLUGINTESTZENDESK"
+
+List startScenario(proj, scenario) {
+    def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/" + proj + "/scenarios/${scenario}/run/"
+    def json = new JsonSlurper().parseText(response.content)
+    triggerId = json.trigger.id
+    triggerRunId = json.runId
+    return [triggerId, triggerRunId]
+}
+
+boolean checkForCompletion(proj, scenario, triggerId, triggerRunId, tc) {
+    def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/" + proj + "/scenarios/${scenario}/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
+    def j = new JsonSlurper().parseText(r.content)
+    println("Content: "+ r.content)
+    def over = j.scenarioRun.containsKey("result");
+    if(over) {
+        start = j.scenarioRun.result.start
+        end = j.scenarioRun.result.end
+        outcome = j.scenarioRun.result.outcome
+        message = ""
+        if (outcome != "SUCCESS") {
+            message = "Error, please check at ${dss_target_host}/projects/${proj}/scenarios/${scenario}/runs/list/${triggerRunId}"
+        }
+        tc.add(["${proj}", "${scenario}", outcome, (end-start)/1000, message]);
+    }
+    return over;
+}
 
 String generateJunitReport(testcases) {
     def junit = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
@@ -52,153 +74,72 @@ pipeline {
         stage('Running tests scenarii') {
             steps {
                 script {
-                    def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_groups/run/"
-                    def json = new JsonSlurper().parseText(response.content)
-                    triggerId = json.trigger.id
-                    triggerRunId = json.runId
+                    (triggerId, triggerRunId) = startScenario(project, "run_read_zendesk_groups")
                 }
                 sleep(1)
-                timeout(max_timeout) {
+                timeout(scenario_timeout) {
                     waitUntil {
                         script {
-                            def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_groups/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
-                            def j = new JsonSlurper().parseText(r.content)
-                            println("Content: "+ r.content)
-                            def over = j.scenarioRun.containsKey("result");
-                            if(over) {
-                                start = j.scenarioRun.result.start
-                                end = j.scenarioRun.result.end
-                                outcome = j.scenarioRun.result.outcome
-                                testcases.add(["${project}", "run_read_zendesk_groups", outcome, (end-start)/1000]);
-                            }
-                            return over;
+                            return checkForCompletion(project, "run_read_zendesk_groups", triggerId, triggerRunId, testcases)
+                        }
+                    }
+                }
+                script {
+                    (triggerId, triggerRunId) = startScenario(project, "run_read_zendesk_incremental")
+                }
+                sleep(1)
+                timeout(scenario_timeout) {
+                    waitUntil {
+                        script {
+                            return checkForCompletion(project, "run_read_zendesk_incremental", triggerId, triggerRunId, testcases)
+                        }
+                    }
+                }
+                script {
+                    (triggerId, triggerRunId) = startScenario(project, "run_read_zendesk_organizations")
+                }
+                sleep(1)
+                timeout(scenario_timeout) {
+                    waitUntil {
+                        script {
+                            return checkForCompletion(project, "run_read_zendesk_organizations", triggerId, triggerRunId, testcases)
+                        }
+                    }
+                }
+                script {
+                    (triggerId, triggerRunId) = startScenario(project, "run_read_zendesk_search")
+                }
+                sleep(1)
+                timeout(scenario_timeout) {
+                    waitUntil {
+                        script {
+                            return checkForCompletion(project, "run_read_zendesk_search", triggerId, triggerRunId, testcases)
+                        }
+                    }
+                }
+                script {
+                    (triggerId, triggerRunId) = startScenario(project, "run_read_zendesk_tickets")
+                }
+                sleep(1)
+                timeout(scenario_timeout) {
+                    waitUntil {
+                        script {
+                            return checkForCompletion(project, "run_read_zendesk_tickets", triggerId, triggerRunId, testcases)
+                        }
+                    }
+                }
+                script {
+                    (triggerId, triggerRunId) = startScenario(project, "run_read_zendesk_users")
+                }
+                sleep(1)
+                timeout(scenario_timeout) {
+                    waitUntil {
+                        script {
+                            return checkForCompletion(project, "run_read_zendesk_users", triggerId, triggerRunId, testcases)
                         }
                     }
                 }
 
-                script {
-                    def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_incremental/run/"
-                    def json = new JsonSlurper().parseText(response.content)
-                    triggerId = json.trigger.id
-                    triggerRunId = json.runId
-                }
-                sleep(1)
-                timeout(max_timeout) {
-                    waitUntil {
-                        script {
-                            def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_incremental/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
-                            def j = new JsonSlurper().parseText(r.content)
-                            println("Content: "+ r.content)
-                            def over = j.scenarioRun.containsKey("result");
-                            if(over) {
-                                start = j.scenarioRun.result.start
-                                end = j.scenarioRun.result.end
-                                outcome = j.scenarioRun.result.outcome
-                                testcases.add(["${project}", "run_read_zendesk_incremental", outcome, (end-start)/1000]);
-                            }
-                            return over;
-                        }
-                    }
-                }
-                script {
-                    def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_organizations/run/"
-                    def json = new JsonSlurper().parseText(response.content)
-                    triggerId = json.trigger.id
-                    triggerRunId = json.runId
-                }
-                sleep(1)
-                timeout(max_timeout) {
-                    waitUntil {
-                        script {
-                            def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_organizations/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
-                            def j = new JsonSlurper().parseText(r.content)
-                            println("Content: "+ r.content)
-                            def over = j.scenarioRun.containsKey("result");
-                            if(over) {
-                                start = j.scenarioRun.result.start
-                                end = j.scenarioRun.result.end
-                                outcome = j.scenarioRun.result.outcome
-                                testcases.add(["${project}", "run_read_zendesk_organizations", outcome, (end-start)/1000]);
-                            }
-                            return over;
-                        }
-                    }
-                }
-
-                script {
-                    def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_search/run/"
-                    def json = new JsonSlurper().parseText(response.content)
-                    triggerId = json.trigger.id
-                    triggerRunId = json.runId
-                }
-                sleep(1)
-                timeout(max_timeout) {
-                    waitUntil {
-                        script {
-                            def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_search/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
-                            def j = new JsonSlurper().parseText(r.content)
-                            println("Content: "+ r.content)
-                            def over = j.scenarioRun.containsKey("result");
-                            if(over) {
-                                start = j.scenarioRun.result.start
-                                end = j.scenarioRun.result.end
-                                outcome = j.scenarioRun.result.outcome
-                                testcases.add(["${project}", "run_read_zendesk_search", outcome, (end-start)/1000]);
-                            }
-                            return over;
-                        }
-                    }
-                }
-
-                script {
-                    def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_tickets/run/"
-                    def json = new JsonSlurper().parseText(response.content)
-                    triggerId = json.trigger.id
-                    triggerRunId = json.runId
-                }
-                sleep(1)
-                timeout(max_timeout) {
-                    waitUntil {
-                        script {
-                            def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_tickets/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
-                            def j = new JsonSlurper().parseText(r.content)
-                            println("Content: "+ r.content)
-                            def over = j.scenarioRun.containsKey("result");
-                            if(over) {
-                                start = j.scenarioRun.result.start
-                                end = j.scenarioRun.result.end
-                                outcome = j.scenarioRun.result.outcome
-                                testcases.add(["${project}", "run_read_zendesk_tickets", outcome, (end-start)/1000]);
-                            }
-                            return over;
-                        }
-                    }
-                }
-
-                script {
-                    def response = httpRequest authentication: 'dss-target-admin', httpMode: 'POST', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_users/run/"
-                    def json = new JsonSlurper().parseText(response.content)
-                    triggerId = json.trigger.id
-                    triggerRunId = json.runId
-                }
-                sleep(1)
-                timeout(max_timeout) {
-                    waitUntil {
-                        script {
-                            def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_users/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
-                            def j = new JsonSlurper().parseText(r.content)
-                            println("Content: "+ r.content)
-                            def over = j.scenarioRun.containsKey("result");
-                            if(over) {
-                                start = j.scenarioRun.result.start
-                                end = j.scenarioRun.result.end
-                                outcome = j.scenarioRun.result.outcome
-                                testcases.add(["${project}", "run_read_zendesk_users", outcome, (end-start)/1000]);
-                            }
-                            return over;
-                        }
-                    }
-                }
             }
         }
         stage ('Output test result') {
