@@ -39,7 +39,7 @@ String generateJunitReport(testcases) {
         println("REsult: " + it)
         junit += "<testcase classname=\"" + it[0] + "\" name=\"" + it[1] + "\" time=\"" + it[3] + "\">\n"
         if(it[2] != "SUCCESS") {
-            junit += "<error/>\n"
+            junit += "<error message=\"" + it[4] +"\"/>\n"
         }
         junit += "</testcase>\n"
     }
