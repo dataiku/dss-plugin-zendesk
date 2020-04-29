@@ -8,6 +8,7 @@ def start
 def end
 def outcome
 def testcases = []
+def max_timeout = 180
 
 String generateJunitReport(testcases) {
     def junit = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
@@ -57,7 +58,7 @@ pipeline {
                     triggerRunId = json.runId
                 }
                 sleep(1)
-                timeout(180) {
+                timeout(max_timeout) {
                     waitUntil {
                         script {
                             def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_groups/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
@@ -82,7 +83,7 @@ pipeline {
                     triggerRunId = json.runId
                 }
                 sleep(1)
-                timeout(180) {
+                timeout(max_timeout) {
                     waitUntil {
                         script {
                             def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_incremental/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
@@ -106,7 +107,7 @@ pipeline {
                     triggerRunId = json.runId
                 }
                 sleep(1)
-                timeout(180) {
+                timeout(max_timeout) {
                     waitUntil {
                         script {
                             def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_organizations/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
@@ -131,7 +132,7 @@ pipeline {
                     triggerRunId = json.runId
                 }
                 sleep(1)
-                timeout(180) {
+                timeout(max_timeout) {
                     waitUntil {
                         script {
                             def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_search/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
@@ -156,7 +157,7 @@ pipeline {
                     triggerRunId = json.runId
                 }
                 sleep(1)
-                timeout(180) {
+                timeout(max_timeout) {
                     waitUntil {
                         script {
                             def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_tickets/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
@@ -181,7 +182,7 @@ pipeline {
                     triggerRunId = json.runId
                 }
                 sleep(1)
-                timeout(180) {
+                timeout(max_timeout) {
                     waitUntil {
                         script {
                             def r = httpRequest authentication: 'dss-target-admin', httpMode: 'GET', url: "${dss_target_host}/public/api/projects/${project}/scenarios/run_read_zendesk_users/get-run-for-trigger?triggerId=${triggerId}&triggerRunId=${triggerRunId}"
