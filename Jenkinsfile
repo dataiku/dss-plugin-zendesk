@@ -10,7 +10,7 @@ pipeline {
             sh """
                python3 -m venv venv
                . venv/bin/activate
-               pip3 install --upgrade pip3
+               pip3 install --upgrade pip
                pip3 install --no-cache-dir -r tests/python/requirements.txt
             """
             sh 'echo "Done with deps"'
