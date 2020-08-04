@@ -21,7 +21,7 @@ pipeline {
             sh 'echo "Running unit tests"'
             sh """
                . venv/bin/activate
-               pytest --junitxml=result.xml ./tests/python/unit || true
+               pytest --junitxml=unit.xml ./tests/python/unit || true
                """
             sh 'echo "Done with unit tests"'
          }
@@ -33,7 +33,7 @@ pipeline {
                 sh 'echo "$HOST"'
                 sh """
                    . venv/bin/activate
-                   pytest --junitxml=result.xml ./tests/python/integration || true
+                   pytest --junitxml=integration.xml ./tests/python/integration || true
                    """
                 sh 'echo "Done with integration tests"'
              }
