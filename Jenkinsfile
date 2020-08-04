@@ -1,5 +1,5 @@
 pipeline {
-   agent any
+   agent 'dss-plugin-tests'
    stages {
       stage('Install dependencies') {
          steps {

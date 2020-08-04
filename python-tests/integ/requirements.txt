@@ -1,3 +1,0 @@
-pytest
-requests<2.22,>=2
-dataiku-api-client
