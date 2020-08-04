@@ -15,6 +15,16 @@ pipeline {
             sh 'echo "Done with deps"'
          }
       }
+      stage('Run Unit Tests') {
+         steps {
+            sh 'echo "Running unit tests"'
+            sh """
+               . venv/bin/activate
+               pytest --junitxml=result.xml ./python-tests/unit
+               """
+            sh 'echo "Done with unit tests"'
+         }
+      }
       stage('Run Integration Tests') {
          steps {
              withCredentials([string(credentialsId: 'dss-target-admin-api-key', variable: 'API_KEY')]) {

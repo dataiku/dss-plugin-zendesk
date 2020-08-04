@@ -10,9 +10,20 @@ pipeline {
             sh """
                python3 -m venv venv
                . venv/bin/activate
-               pip3 install -r python-tests/integ/requirements.txt
+               pip3 install --upgrade pip3
+               pip3 install --no-cache-dir -r tests/python/requirements.txt
             """
             sh 'echo "Done with deps"'
+         }
+      }
+      stage('Run Unit Tests') {
+         steps {
+            sh 'echo "Running unit tests"'
+            sh """
+               . venv/bin/activate
+               pytest --junitxml=result.xml ./tests/python/unit || true
+               """
+            sh 'echo "Done with unit tests"'
          }
       }
       stage('Run Integration Tests') {
@@ -22,7 +33,7 @@ pipeline {
                 sh 'echo "$HOST"'
                 sh """
                    . venv/bin/activate
-                   pytest --junitxml=result.xml ./python-tests/integ || true
+                   pytest --junitxml=result.xml ./tests/python/integration || true
                    """
                 sh 'echo "Done with integration tests"'
              }
