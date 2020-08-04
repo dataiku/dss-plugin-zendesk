@@ -39,7 +39,7 @@ pipeline {
    }
    post {
      always {
-        junit '*.xml'
+        junit 'unit.xml integration.xml'
      }
    }
 }
