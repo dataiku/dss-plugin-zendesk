@@ -16,9 +16,7 @@ pipeline {
          steps {
             sh 'echo "Running unit tests"'
             sh """
-               . venv/bin/activate
-               export PYTHONPATH=$PYTHONPATH:$PWD/python-lib
-               pytest --junitxml=unit.xml ./tests/python/unit || true
+               make unit-tests
                """
             sh 'echo "Done with unit tests"'
          }
