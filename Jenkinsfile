@@ -23,12 +23,11 @@ pipeline {
       }
       stage('Run Integration Tests') {
          steps {
-             withCredentials([string(credentialsId: 'dss-target-admin-api-key', variable: 'API_KEY')]) {
+             withCredentials([string(credentialsId: 'dss-plugins-admin-api-key', variable: 'API_KEY')]) {
                 sh 'echo "Running integration tests"'
                 sh 'echo "$HOST"'
                 sh """
-                   . venv/bin/activate
-                   pytest --junitxml=integration.xml ./tests/python/integration || true
+                   make integration-tests
                    """
                 sh 'echo "Done with integration tests"'
              }
