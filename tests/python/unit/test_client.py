@@ -1,9 +1,6 @@
 import os
 import sys
 
-#  Add stuff to the path to enable exec outside of DSS
-plugin_root = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-sys.path.append(os.path.join(plugin_root, 'python-lib'))
 from zendesk_client import ZendeskClient
 
 fake_conf = {

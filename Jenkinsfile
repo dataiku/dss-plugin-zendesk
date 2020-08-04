@@ -4,23 +4,20 @@ pipeline {
         HOST = "$dss_target_host"
     }
    stages {
-      stage('Install dependencies') {
+/*       stage('Install dependencies') {
          steps {
             sh 'echo "Installing deps"'
             sh """
-               python3 -m venv venv
-               . venv/bin/activate
-               pip3 install --upgrade pip
-               pip3 install --no-cache-dir -r tests/python/requirements.txt
             """
             sh 'echo "Done with deps"'
          }
-      }
+      } */
       stage('Run Unit Tests') {
          steps {
             sh 'echo "Running unit tests"'
             sh """
                . venv/bin/activate
+               export PYTHONPATH=$PYTHONPATH:$PWD/python-lib
                pytest --junitxml=unit.xml ./tests/python/unit || true
                """
             sh 'echo "Done with unit tests"'
