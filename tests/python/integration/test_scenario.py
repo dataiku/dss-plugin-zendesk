@@ -1,31 +1,25 @@
-from . import scenario
+from dku_plugin_test_utils import scenario
 
 
-@scenario('PLUGINTESTZENDESK', 'run_read_zendesk_groups')
-def test_run_read_zendesk_groups():
-    pass
+def test_run_read_zendesk_groups(client):
+    scenario(client, 'PLUGINTESTZENDESK', 'run_read_zendesk_groups')
 
 
-@scenario('PLUGINTESTZENDESK', 'run_read_zendesk_incremental')
-def test_run_read_zendesk_incremental():
-    pass
+def test_run_read_zendesk_incremental(client):
+    scenario(client, 'PLUGINTESTZENDESK', 'run_read_zendesk_incremental')
 
 
-@scenario('PLUGINTESTZENDESK', 'run_read_zendesk_organizations')
-def test_run_read_zendesk_organizations():
-    pass
+def test_run_read_zendesk_organizations(client):
+    scenario(client, 'PLUGINTESTZENDESK', 'run_read_zendesk_organizations')
 
 
-@scenario('PLUGINTESTZENDESK', 'run_read_zendesk_search')
-def test_run_read_zendesk_search():
-    pass
+def test_run_read_zendesk_search(client):
+    scenario(client, 'PLUGINTESTZENDESK', 'run_read_zendesk_search')
 
 
-@scenario('PLUGINTESTZENDESK', 'run_read_zendesk_tickets')
-def test_run_read_zendesk_tickets():
-    pass
+def test_run_read_zendesk_tickets(client):
+    scenario(client, 'PLUGINTESTZENDESK', 'run_read_zendesk_tickets')
 
 
-@scenario('PLUGINTESTZENDESK','run_read_zendesk_users')
-def test_run_read_zendesk_users():
-    pass
+def test_run_read_zendesk_users(client):
+    scenario(client, 'PLUGINTESTZENDESK', 'run_read_zendesk_users')
