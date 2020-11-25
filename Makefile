@@ -38,7 +38,7 @@ unit-tests:
 
 integration-tests:
 	@echo "[START] Running integration tests..."
-	pytest tests/python/integration/test_scenario.py
+	pytest tests/python/integration/test_scenario.py --alluredir=tests/allure_report
 	@echo "[SUCCESS] Running integration tests: Done!"
 
 tests: unit-tests integration-tests
