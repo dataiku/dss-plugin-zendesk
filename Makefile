@@ -43,10 +43,7 @@ integration-tests:
 		source env/bin/activate; \
 		pip3 install --upgrade pip;\
 		pip install --no-cache-dir -r tests/python/requirements.txt; \
-		pip install --no-cache-dir -r code-env/python/spec/requirements.txt; \
-		export PYTHONPATH="$(PYTHONPATH):$(PWD)/python-lib"; \
-		echo "PYTHONPATH=$(PYTHONPATH)";\
-        pytest tests/python/integration/test_scenario.py --alluredir=tests/allure_report || true; \
+        pytest tests/python/integration/test_scenario.py --alluredir=tests/allure_report; \
 		deactivate; \
 	)
 	@echo "[SUCCESS] Running integration tests: Done!"
