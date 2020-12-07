@@ -15,14 +15,12 @@ pipeline {
       }
       stage('Run Integration Tests') {
          steps {
-             withEnv {
-                sh 'echo "Running integration tests"'
-                sh 'echo "$HOST"'
-                sh """
-                   make integration-tests
-                   """
-                sh 'echo "Done with integration tests"'
-             }
+            sh 'echo "Running integration tests"'
+            sh 'echo "$HOST"'
+            sh """
+               make integration-tests
+               """
+            sh 'echo "Done with integration tests"'
          }
       }
    }
