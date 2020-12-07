@@ -1,3 +1,5 @@
 pytest
 requests<2.22,>=2
 dataiku-api-client
+git+git://github.com/dataiku/dataiku-plugin-tests-utils.git@master#egg=dku_plugin_test_utils
+allure-pytest==2.8.22
