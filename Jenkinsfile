@@ -1,17 +1,9 @@
 pipeline {
    agent { label 'dss-plugin-tests'}
    environment {
-        HOST = "$dss_target_host"
+        PLUGIN_INTEGRATION_TEST_INSTANCE="/home/jenkins/instance_config.json"
     }
    stages {
-/*       stage('Install dependencies') {
-         steps {
-            sh 'echo "Installing deps"'
-            sh """
-            """
-            sh 'echo "Done with deps"'
-         }
-      } */
       stage('Run Unit Tests') {
          steps {
             sh 'echo "Running unit tests"'
@@ -23,7 +15,7 @@ pipeline {
       }
       stage('Run Integration Tests') {
          steps {
-             withCredentials([string(credentialsId: 'dss-plugins-admin-api-key', variable: 'API_KEY')]) {
+             withEnv {
                 sh 'echo "Running integration tests"'
                 sh 'echo "$HOST"'
                 sh """
@@ -37,6 +29,15 @@ pipeline {
    post {
      always {
         junit '*.xml'
+        script {
+           allure([
+                    includeProperties: false,
+                    jdk: '',
+                    properties: [],
+                    reportBuildPolicy: 'ALWAYS',
+                    results: [[path: 'tests/allure_report']]
+            ])
+        }
      }
    }
 }
