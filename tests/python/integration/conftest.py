@@ -100,7 +100,9 @@ def plugin(dss_clients):
     """
 
     logger.info("Uploading the pluging to each DSS instances [{}]".format(",".join(dss_clients.keys())))
-    subprocess.run(['make', 'plugin'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = subprocess.Popen(['make', 'plugin'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = p.communicate()
+    logger.debug("make command output:\n - stdout:\n{}\n - stderr:\n{}".format(stdout, stderr))
     info = get_plugin_info()
     logger.setLevel(logging.DEBUG)
     plugin_zip_name = "dss-plugin-{plugin_id}-{plugin_version}.zip".format(plugin_id=info["id"], plugin_version=info["version"])
