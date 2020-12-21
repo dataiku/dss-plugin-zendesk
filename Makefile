@@ -39,6 +39,7 @@ unit-tests:
 integration-tests:
 	@echo "[START] Running integration tests..."
 	@( \
+		rm -rf ./env/
 		python3 -m venv env/; \
 		source env/bin/activate; \
 		pip3 install --upgrade pip;\
