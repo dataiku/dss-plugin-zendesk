@@ -46,11 +46,11 @@ pipeline {
                colorCode = '#FFC300'
             }
             
-            def subject = "Plugin : ${env.JOB_NAME}"
-            def job_info = "Build number : ${env.BUILD_NUMBER}"
-            def status_info = "Status : ${status}"
-            def build_url = "Build : ${env.BUILD_URL}"
-            def allure_report = "Report : ${env.BUILD_URL}/allure"
+            def subject = "*Plugin* : ${env.JOB_NAME}"
+            def job_info = "*Build number* : ${env.BUILD_NUMBER}"
+            def status_info = "*Status* : ${status}"
+            def build_url = "*Build* : ${env.BUILD_URL}"
+            def allure_report = "*Report* : ${env.BUILD_URL}/allure"
             def summary = "${subject}\n${job_info}\n${status_info}\n${build_url}\n${allure_report}"
             def slackResponse = slackSend(channel:"#rd-plugins-qa", color: colorCode, message: summary, notifyCommitters: true)
             slackSend(channel:slackResponse.threadId, message: "a thread message")
