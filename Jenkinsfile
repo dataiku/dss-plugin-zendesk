@@ -43,7 +43,7 @@ pipeline {
             def status = currentBuild.currentResult
             if (status == 'SUCCESS')
             {
-               colorCode = '#FF0000'
+               colorCode = '#00FF00'
             }
             if (status == 'UNSTABLE')
             {
