@@ -26,7 +26,7 @@ unit-tests:
 		python3 -m venv env/; \
 		source env/bin/activate; \
 		pip3 install --upgrade pip;\
-		pip install --no-cache-dir -r tests/python/requirements.txt; \
+		pip install --no-cache-dir -r tests/python/unit/requirements.txt; \
 		pip install --no-cache-dir -r code-env/python/spec/requirements.txt; \
 		export PYTHONPATH="$(PYTHONPATH):$(PWD)/python-lib"; \
 		echo "PYTHONPATH=$(PYTHONPATH)";\
@@ -43,7 +43,7 @@ integration-tests:
 		python3 -m venv env/; \
 		source env/bin/activate; \
 		pip3 install --upgrade pip;\
-		pip install --no-cache-dir -r tests/python/requirements.txt; \
+		pip install --no-cache-dir -r tests/python/integration/requirements.txt; \
         pytest tests/python/integration --alluredir=tests/allure_report;\
 		deactivate; \
 	)
