@@ -47,32 +47,32 @@ pipeline {
             }
 
             blocks = [
-            [
-            "type": "header",
-            "text": [
-            "type": "plain_text",
-            "text": "Plugin Job : ${env.JOB_NAME} ",
-            "emoji": true
-            ]
-            ],
-            [
-            "type": "divider"
-            ],
-            [
-            "type": "section",
-            "text": [
-            "type": "mrkdwn",
-            "text": "Run information : ${env.BUILD_URL}"
-            ]
-            ],
-            [
-            "type": "section",
-            "text": [
-            "type": "mrkdwn",
-            "text": "Allure report : ${env.BUILD_URL}"
-            ]
-            ]
-            ]
+		{
+			"type": "header",
+			"text": {
+				"type": "plain_text",
+				"text": "Plugin Job : ${env.JOB_NAME} ",
+				"emoji": true
+			}
+		},
+		{
+			"type": "divider"
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "Run information : ${env.BUILD_URL}"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "Allure report : ${env.BUILD_URL}"
+			}
+		}
+	]
             
             def subject = "${status}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
             def summary = "${subject} (${env.BUILD_URL})"
