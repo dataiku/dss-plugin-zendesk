@@ -28,14 +28,28 @@ pipeline {
    post {
      always {
         script {
-           allure([
-                    includeProperties: false,
-                    jdk: '',
-                    properties: [],
-                    reportBuildPolicy: 'ALWAYS',
-                    results: [[path: 'tests/allure_report']]
+            allure([
+                     includeProperties: false,
+                     jdk: '',
+                     properties: [],
+                     reportBuildPolicy: 'ALWAYS',
+                     results: [[path: 'tests/allure_report']]
             ])
+            def colorCode = '#FF0000'
+            if (${currentBuild.currentResult} == 'SUCCESS')
+            {
+               colorCode = '#FF0000'
+            }
+            if (${currentBuild.currentResult} == 'UNSTABLE')
+            {
+               colorCode = '#FFC300'
+            }
+            
+            def subject = "${currentBuild.currentResult}: Job '${env.JOB_BASE_NAME} [${env.BUILD_NUMBER}]'"
+            def summary = "${subject} (${env.BUILD_URL})"
+            slackSend color: colorCode, message: summary, notifyCommitters: true 
         }
+         
      }
    }
 }
