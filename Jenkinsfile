@@ -19,7 +19,6 @@ pipeline {
       stage('Run Integration Tests') {
          steps {
             sh 'echo "Running integration tests"'
-            sh 'echo "$HOST"'
             catchError(stageResult: 'FAILURE') {
             sh """
                make integration-tests
