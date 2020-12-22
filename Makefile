@@ -29,8 +29,7 @@ unit-tests:
 		pip install --no-cache-dir -r tests/python/unit/requirements.txt; \
 		pip install --no-cache-dir -r code-env/python/spec/requirements.txt; \
 		export PYTHONPATH="$(PYTHONPATH):$(PWD)/python-lib"; \
-        pytest tests/python/unit --alluredir=tests/allure_report; \
-		echo $?; \
+        pytest tests/python/unit --alluredir=tests/allure_report; echo "----"; echo $?; echo "-----" \
 		deactivate; \
 	)
 
