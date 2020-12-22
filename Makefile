@@ -23,6 +23,7 @@ plugin:
 unit-tests:
 	@echo "Running unit tests..."
 	@( \
+		rm -rf ./env/; \
 		python3 -m venv env/; \
 		source env/bin/activate; \
 		pip3 install --upgrade pip;\
