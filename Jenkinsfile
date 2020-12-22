@@ -8,7 +8,7 @@ pipeline {
       stage('Run Unit Tests') {
          steps {
             sh 'echo "Running unit tests"'
-            catchError {
+            catchError(stageResult: 'FAILURE') {
             sh """
                make unit-tests
                """
@@ -20,7 +20,7 @@ pipeline {
          steps {
             sh 'echo "Running integration tests"'
             sh 'echo "$HOST"'
-            catchError {
+            catchError(stageResult: 'FAILURE') {
             sh """
                make integration-tests
                """
