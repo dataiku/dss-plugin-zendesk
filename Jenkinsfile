@@ -46,10 +46,10 @@ pipeline {
                colorCode = '#FFC300'
             }
 
-            blocks= [
+            blocks = [
             [
             "type": "header",
-            "text": {
+            "text": [
             "type": "plain_text",
             "text": "Plugin Job : ${env.JOB_NAME} ",
             "emoji": true
@@ -67,10 +67,10 @@ pipeline {
             ],
             [
             "type": "section",
-            "text": ]
+            "text": [
             "type": "mrkdwn",
             "text": "Allure report : ${env.BUILD_URL}"
-            [
+            ]
             ]
             ]
             
