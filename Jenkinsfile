@@ -37,46 +37,22 @@ pipeline {
             ])
             def colorCode = '#FF0000'
             def status = currentBuild.currentResult
-            if (currentBuild.currentResult == 'SUCCESS')
+            if (status == 'SUCCESS')
             {
                colorCode = '#FF0000'
             }
-            if (currentBuild.currentResult == 'UNSTABLE')
+            if (status == 'UNSTABLE')
             {
                colorCode = '#FFC300'
             }
-
-            blocks = [
-		{
-			"type": "header",
-			"text": {
-				"type": "plain_text",
-				"text": "Plugin Job : ${env.JOB_NAME} ",
-				"emoji": true
-			}
-		},
-		{
-			"type": "divider"
-		},
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": "Run information : ${env.BUILD_URL}"
-			}
-		},
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": "Allure report : ${env.BUILD_URL}"
-			}
-		}
-	]
             
-            def subject = "${status}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
-            def summary = "${subject} (${env.BUILD_URL})"
-            slackSend(color: colorCode, blocks: blocks)
+            def subject = "Plugin : ${env.JOB_NAME}"
+            def job_info = "Build number : ${env.BUILD_NUMBER}"
+            def status_info = "Status : ${status}"
+            def build_url = "Build : ${env.BUILD_URL}"
+            def allure_report = "Report : ${env.BUILD_URL}/allure"
+            def summary = "${subject} ${job_info} ${status_info} ${build_url} ${allure_report} ${summary}"
+            slackSend color: colorCode, message: summary, notifyCommitters: true 
         }
          
      }
