@@ -52,7 +52,9 @@ pipeline {
             def build_url = "Build : ${env.BUILD_URL}"
             def allure_report = "Report : ${env.BUILD_URL}/allure"
             def summary = "${subject} ${job_info} ${status_info} ${build_url} ${allure_report} ${summary}"
-            slackSend color: colorCode, message: summary, notifyCommitters: true 
+            def slackResponse = slackSend(color: colorCode, message: summary, notifyCommitters: true)
+            slackSend(channel:slackResponse.threadId, message: a thread message)
+
         }
          
      }
