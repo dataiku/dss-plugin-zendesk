@@ -51,10 +51,8 @@ pipeline {
             def status_info = "*Status* : ${status}"
             def build_url = "*Build* : ${env.BUILD_URL}"
             def allure_report = "*Report* : ${env.BUILD_URL}/allure"
-            def summary = "${subject}\n${job_info}\n${status_info}\n${build_url}\n${allure_report}"
-            def slackResponse = slackSend(channel:"#rd-plugins-qa", color: colorCode, message: summary, notifyCommitters: true)
-            slackSend(channel:slackResponse.threadId, message: "a thread message")
-
+            def summary = "${subject}\n${status_info}\n\n${job_info}\n${build_url}\n${allure_report}"
+            slackSend(color: colorCode, message: summary, notifyCommitters: true)
         }
          
      }
