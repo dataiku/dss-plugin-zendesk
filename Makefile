@@ -21,7 +21,7 @@ plugin:
 	@echo "[SUCCESS] Archiving plugin to dist/ folder: Done!"
 
 unit-tests:
-	@echo "[START] Running unit tests..."
+	@echo "Running unit tests..."
 	@( \
 		python3 -m venv env/; \
 		source env/bin/activate; \
@@ -29,12 +29,9 @@ unit-tests:
 		pip install --no-cache-dir -r tests/python/unit/requirements.txt; \
 		pip install --no-cache-dir -r code-env/python/spec/requirements.txt; \
 		export PYTHONPATH="$(PYTHONPATH):$(PWD)/python-lib"; \
-		echo "PYTHONPATH=$(PYTHONPATH)";\
-		echo "suis je debile? $(PYTHONPATH):$(PWD)/python-lib"; \
         pytest tests/python/unit --alluredir=tests/allure_report; \
 		deactivate; \
 	)
-	@echo "[SUCCESS] Running unit tests: Done!"
 
 integration-tests:
 	@echo "[START] Running integration tests..."
@@ -47,7 +44,6 @@ integration-tests:
         pytest tests/python/integration --alluredir=tests/allure_report;\
 		deactivate; \
 	)
-	@echo "[SUCCESS] Running integration tests: Done!"
 
 tests: unit-tests integration-tests
 
