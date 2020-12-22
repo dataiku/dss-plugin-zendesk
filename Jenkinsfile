@@ -36,16 +36,17 @@ pipeline {
                      results: [[path: 'tests/allure_report']]
             ])
             def colorCode = '#FF0000'
-            if (${currentBuild.currentResult} == 'SUCCESS')
+            def status = currentBuild.currentResult
+            if (currentBuild.currentResult == 'SUCCESS')
             {
                colorCode = '#FF0000'
             }
-            if (${currentBuild.currentResult} == 'UNSTABLE')
+            if (currentBuild.currentResult == 'UNSTABLE')
             {
                colorCode = '#FFC300'
             }
             
-            def subject = "${currentBuild.currentResult}: Job '${env.JOB_BASE_NAME} [${env.BUILD_NUMBER}]'"
+            def subject = "${status}: Job '${env.JOB_BASE_NAME} [${env.BUILD_NUMBER}]'"
             def summary = "${subject} (${env.BUILD_URL})"
             slackSend color: colorCode, message: summary, notifyCommitters: true 
         }
