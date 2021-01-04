@@ -30,6 +30,7 @@ pipeline {
    }
    post {
      always {
+        sh 'echo TOTO >> /home/jenkins-agent/daily-run-info.json'
         script {
             allure([
                      includeProperties: false,
