@@ -41,7 +41,7 @@ pipeline {
             ])
             def colorCode = '#FF0000'
             def status = currentBuild.currentResult
-            
+            sh 'echo ${status} >> ${env.JOB_NAME}.status'
             
             def subject = "*Plugin* : ${env.JOB_NAME}"
             def job_info = "*Build number* : ${env.BUILD_NUMBER}"
