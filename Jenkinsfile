@@ -31,7 +31,6 @@ pipeline {
    }
    post {
      always {
-        sh 'curl -X POST -H "Content-type: application/json" --data "{\\"text\\":\\"Hello, World!\\"}" $SLACK_HOOK'
         script {
             allure([
                      includeProperties: false,
@@ -42,14 +41,7 @@ pipeline {
             ])
             def colorCode = '#FF0000'
             def status = currentBuild.currentResult
-            if (status == 'SUCCESS')
-            {
-               colorCode = '#00FF00'
-            }
-            if (status == 'UNSTABLE')
-            {
-               colorCode = '#FFC300'
-            }
+            
             
             def subject = "*Plugin* : ${env.JOB_NAME}"
             def job_info = "*Build number* : ${env.BUILD_NUMBER}"
@@ -57,7 +49,18 @@ pipeline {
             def build_url = "*Build* : ${env.BUILD_URL}"
             def allure_report = "*Report* : ${env.BUILD_URL}/allure"
             def summary = "${subject}\n${status_info}\n\n${job_info}\n${build_url}\n${allure_report}"
-            slackSend(color: colorCode, message: summary, notifyCommitters: true)
+
+            
+            if (status == 'UNSTABLE')
+            {
+               colorCode = '#FFC300'
+               slackSend(color: colorCode, message: summary, notifyCommitters: true)
+            }
+            if (status == 'FAILURE')
+            {
+               slackSend(color: colorCode, message: summary, notifyCommitters: true)
+            }
+            
         }
          
      }
