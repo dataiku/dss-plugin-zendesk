@@ -3,6 +3,7 @@ pipeline {
    agent { label 'dss-plugin-tests'}
    environment {
         PLUGIN_INTEGRATION_TEST_INSTANCE="/home/jenkins-agent/instance_config.json"
+        SLACK_HOOK=credentials("slack_hook")
     }
    stages {
       stage('Run Unit Tests') {
@@ -30,7 +31,7 @@ pipeline {
    }
    post {
      always {
-        sh 'echo TOTO >> /home/jenkins-agent/daily-run-info.json'
+        sh 'curl -X POST -H "Content-type: application/json" --data '{"text":"Hello, World!"} ${SLACK_HOOK}'
         script {
             allure([
                      includeProperties: false,
