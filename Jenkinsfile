@@ -22,7 +22,7 @@ pipeline {
             sh 'echo "Running integration tests"'
             catchError(stageResult: 'FAILURE') {
             sh """
-               make integration-tests
+               make integration-test
                """
             }
             sh 'echo "Done with integration tests"'
