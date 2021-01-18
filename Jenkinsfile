@@ -41,7 +41,8 @@ pipeline {
             ])
             def colorCode = '#FF0000'
             def status = currentBuild.currentResult
-            sh "file_name=\$(echo ${env.JOB_NAME} | tr '/' '-').status; touch \$file_name; echo ${status} >> /home/jenkins-agent/daily-statuses/\$file_name"
+            
+            sh "file_name=\$(echo ${env.JOB_NAME} | tr '/' '-').status; touch \$file_name; echo \"${env.BUILD_URL},${status}\" >> /home/jenkins-agent/daily-statuses/\$file_name"
             
             def subject = "*Plugin* : ${env.JOB_NAME}"
             def job_info = "*Build number* : ${env.BUILD_NUMBER}"
