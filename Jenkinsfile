@@ -2,7 +2,7 @@ pipeline {
    options { disableConcurrentBuilds() }
    agent { label 'dss-plugin-tests'}
    environment {
-        PLUGIN_INTEGRATION_TEST_INSTANCE="/home/jenkins-agent/instance_config.json"
+        PLUGIN_INTEGRATION_TEST_INSTANCE="$JENKINS_TEST_AGENT_HOME/instance_config.json"
         SLACK_HOOK=credentials("slack_hook")
     }
    stages {
@@ -41,7 +41,7 @@ pipeline {
             ])
             def status = currentBuild.currentResult
             
-            sh "file_name=\$(echo ${env.JOB_NAME} | tr '/' '-').status; touch \$file_name; echo \"${env.BUILD_URL};${env.CHANGE_TITLE};${env.CHANGE_AUTHOR};${env.CHANGE_URL};${status}\" >> $JENKINS_HOME/daily-statuses/\$file_name"
+            sh "file_name=\$(echo ${env.JOB_NAME} | tr '/' '-').status; touch \$file_name; echo \"${env.BUILD_URL};${env.CHANGE_TITLE};${env.CHANGE_AUTHOR};${env.CHANGE_URL};${status}\" >> $JENKINS_TEST_AGENT_HOME/daily-statuses/\$file_name"
             
         }
          
