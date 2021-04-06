@@ -10,7 +10,7 @@ def test_run_read_zendesk_incremental(user_dss_clients):
 
 
 def test_run_read_zendesk_organizations(user_dss_clients):
-    dss_scenario.run(user_dss_clients, 'PLUGINTESTZENDESK', 'run_read_zendesk_organizations', user="user1")
+    dss_scenario.run(user_dss_clients, 'PLUGINTESTZENDESK', 'run_read_zendesk_organizations', user="data_scientist_1")
 
 
 def test_run_read_zendesk_search(user_dss_clients):
